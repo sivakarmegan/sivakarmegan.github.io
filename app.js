@@ -5,7 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initSkillObserver();
   initTiltEffect();
   initContactForm();
+  initCustomCursor();
+  initMouseGlow();
 });
+
+// Shared mouse coordinate object for particle interactions
+const globalMouse = { x: -1000, y: -1000 };
 
 /* 1. Particle Canvas Background */
 function initParticleBackground() {
@@ -22,30 +27,105 @@ function initParticleBackground() {
   });
   
   const particles = [];
-  const maxParticles = 40;
+  const maxParticles = 65; // increased density for winding flow
+  
+  // Premium organic colors: magentas, purples, cyans, teals
+  const palette = [
+    'rgba(236, 72, 153, 0.5)',  // pink/magenta (petals)
+    'rgba(168, 85, 247, 0.5)',  // purple
+    'rgba(6, 182, 212, 0.5)',   // cyan (sea waves)
+    'rgba(20, 184, 166, 0.5)'    // teal
+  ];
   
   class Particle {
     constructor() {
       this.x = Math.random() * width;
       this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 0.4;
-      this.vy = (Math.random() - 0.5) * 0.4;
-      this.radius = Math.random() * 2 + 1;
+      this.vx = (Math.random() - 0.5) * 0.3;
+      this.vy = (Math.random() - 0.5) * 0.3;
+      this.radius = Math.random() * 2.5 + 1.5;
+      this.color = palette[Math.floor(Math.random() * palette.length)];
+      this.angle = Math.random() * Math.PI * 2;
+      this.spinSpeed = (Math.random() - 0.5) * 0.03;
+      this.trail = [];
     }
     
-    update() {
+    update(time) {
+      // 1. Organic wave wind current drift (sea winding / flowers blowing)
+      // Generates continuous flow field waves based on sine waves
+      const windX = Math.sin(time * 0.002 + this.y * 0.004) * 0.4;
+      const windY = Math.cos(time * 0.002 + this.x * 0.004) * 0.3;
+      
+      this.vx += windX;
+      this.vy += windY;
+      
+      // 2. Swirling vortex force towards mouse when cursor is active
+      const dx = this.x - globalMouse.x;
+      const dy = this.y - globalMouse.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist < 260) {
+        const force = (260 - dist) / 260;
+        const angle = Math.atan2(dy, dx);
+        
+        // Circular swirl direction (perpendicular to angle) + drag pull inward
+        const swirlAngle = angle + Math.PI / 2 + 0.15;
+        this.vx += Math.cos(swirlAngle) * force * 0.8;
+        this.vy += Math.sin(swirlAngle) * force * 0.8;
+      }
+      
+      // 3. Friction & speed damping
+      this.vx *= 0.95;
+      this.vy *= 0.95;
+      
+      // Apply movement
       this.x += this.vx;
       this.y += this.vy;
       
-      if (this.x < 0 || this.x > width) this.vx *= -1;
-      if (this.y < 0 || this.y > height) this.vy *= -1;
+      // Angle spin
+      this.angle += this.spinSpeed;
+      
+      // Boundaries wrapping
+      if (this.x < -30) this.x = width + 30;
+      if (this.x > width + 30) this.x = -30;
+      if (this.y < -30) this.y = height + 30;
+      if (this.y > height + 30) this.y = -30;
+      
+      // Trail updates
+      this.trail.push({ x: this.x, y: this.y });
+      if (this.trail.length > 10) {
+        this.trail.shift();
+      }
     }
     
     draw() {
+      // Draw smooth winding light trail
+      if (this.trail.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(this.trail[0].x, this.trail[0].y);
+        for (let i = 1; i < this.trail.length; i++) {
+          ctx.lineTo(this.trail[i].x, this.trail[i].y);
+        }
+        ctx.strokeStyle = this.color.replace('0.5', '0.12'); // faint neon tail
+        ctx.lineWidth = this.radius * 0.7;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.stroke();
+      }
+      
+      // Draw organic petal/leaf shape
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.angle);
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(6, 182, 212, 0.25)';
+      // almond shape
+      ctx.moveTo(0, -this.radius * 1.6);
+      ctx.quadraticCurveTo(this.radius * 1.3, -this.radius * 0.5, 0, this.radius * 1.6);
+      ctx.quadraticCurveTo(-this.radius * 1.3, -this.radius * 0.5, 0, -this.radius * 1.6);
+      ctx.fillStyle = this.color;
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = this.color;
       ctx.fill();
+      ctx.restore();
     }
   }
   
@@ -53,32 +133,23 @@ function initParticleBackground() {
     particles.push(new Particle());
   }
   
-  function animate() {
+  let lastTime = 0;
+  function animate(timestamp) {
+    if (!lastTime) lastTime = timestamp;
+    const elapsed = timestamp - lastTime;
+    
+    // Clear canvas
     ctx.clearRect(0, 0, width, height);
     
-    particles.forEach((p, idx) => {
-      p.update();
+    particles.forEach((p) => {
+      p.update(timestamp);
       p.draw();
-      
-      // Draw lines between nearby particles
-      for (let j = idx + 1; j < particles.length; j++) {
-        const p2 = particles[j];
-        const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-        if (dist < 120) {
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(139, 92, 246, ${0.12 * (1 - dist / 120)})`;
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
-      }
     });
     
     requestAnimationFrame(animate);
   }
   
-  animate();
+  requestAnimationFrame(animate);
 }
 
 /* 2. Text Typing Effect */
@@ -395,3 +466,68 @@ window.addEventListener('scroll', () => {
     }
   });
 });
+
+/* 7. Mouse Spotlight Glow Control */
+function initMouseGlow() {
+  const glow = document.querySelector('.cursor-glow');
+  if (!glow) return;
+  
+  window.addEventListener('mousemove', (e) => {
+    // Update global mouse pointer positions
+    globalMouse.x = e.clientX;
+    globalMouse.y = e.clientY;
+    
+    document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+    document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+  });
+}
+
+/* 8. Premium Dual Custom Cursor Control */
+function initCustomCursor() {
+  const dot = document.querySelector('.custom-cursor-dot');
+  const ring = document.querySelector('.custom-cursor-ring');
+  if (!dot || !ring) return;
+
+  let mouseX = -100;
+  let mouseY = -100;
+  let ringX = -100;
+  let ringY = -100;
+  
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    // Instantly set position of center core dot
+    dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+  });
+  
+  // Smoothly LERP position of outer tracking ring
+  function updateRing() {
+    const ease = 0.15;
+    ringX += (mouseX - ringX) * ease;
+    ringY += (mouseY - ringY) * ease;
+    
+    ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+    requestAnimationFrame(updateRing);
+  }
+  requestAnimationFrame(updateRing);
+  
+  // Bind hover states using high-performance mouseover/mouseout event delegation
+  document.addEventListener('mouseover', (e) => {
+    const interactive = e.target.closest('a, button, input, textarea, select, .btn, .app-icon-wrapper, .back-arrow, .project-link, .submit-btn, .pay-btn, #rp-trigger');
+    if (interactive) {
+      dot.classList.add('hover');
+      ring.classList.add('hover');
+    }
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    const interactive = e.target.closest('a, button, input, textarea, select, .btn, .app-icon-wrapper, .back-arrow, .project-link, .submit-btn, .pay-btn, #rp-trigger');
+    if (interactive) {
+      if (!e.relatedTarget || !interactive.contains(e.relatedTarget)) {
+        dot.classList.remove('hover');
+        ring.classList.remove('hover');
+      }
+    }
+  });
+}
