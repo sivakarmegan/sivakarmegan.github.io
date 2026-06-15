@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initContactForm();
   initCustomCursor();
   initMouseGlow();
+  initScrollReveal();
+  initCardSpotlight();
+  initCardTilt();
 });
 
 // Shared mouse coordinate object for particle interactions
@@ -529,5 +532,61 @@ function initCustomCursor() {
         ring.classList.remove('hover');
       }
     }
+  });
+}
+
+/* 9. Scroll Reveal Observer */
+function initScrollReveal() {
+  const revealElements = document.querySelectorAll('.scroll-reveal');
+  if (revealElements.length === 0) return;
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('reveal-visible');
+      }
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px'
+  });
+  
+  revealElements.forEach(el => observer.observe(el));
+}
+
+/* 10. Card Spotlight Glow Control */
+function initCardSpotlight() {
+  const cards = document.querySelectorAll('.glass-card');
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--card-mouse-x', `${x}px`);
+      card.style.setProperty('--card-mouse-y', `${y}px`);
+    });
+  });
+}
+
+/* 11. 3D Tilt Card Effect */
+function initCardTilt() {
+  const tiltCards = document.querySelectorAll('.tilt-card');
+  tiltCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = -(y - centerY) / 12; // pitch
+      const rotateY = (x - centerX) / 12;  // yaw
+      
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+    });
   });
 }
