@@ -618,7 +618,4 @@ function initSplashScreen() {
   
   // Auto-remove after 2.5 seconds (gives animations time to run)
   setTimeout(removeSplash, 2500);
-  
-  // Fallback if window load fires earlier
-  window.addEventListener('load', removeSplash);
 }

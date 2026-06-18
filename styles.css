@@ -1389,8 +1389,8 @@ footer {
 
 #splash-screen.fade-out {
   opacity: 0;
+  transform: scale(3.0);
   pointer-events: none;
-  transform: scale(1.05);
 }
 
 .splash-logo-container {
