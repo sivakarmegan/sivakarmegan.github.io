@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   initSplashScreen();
+  initThemeToggle();
   initParticleBackground();
   initTypingAnimation();
   initPhoneSimulator();
@@ -618,4 +619,51 @@ function initSplashScreen() {
   
   // Auto-remove after 2.5 seconds (gives animations time to run)
   setTimeout(removeSplash, 2500);
+}
+
+/* 13. Light/Dark Theme Toggle Control */
+function initThemeToggle() {
+  const toggleBtn = document.getElementById('theme-toggle');
+  if (!toggleBtn) return;
+  
+  const icon = toggleBtn.querySelector('i');
+  
+  // Check saved setting or default to system
+  const savedTheme = localStorage.getItem('theme');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  
+  // Set default (default is dark, so light theme is chosen if saved as 'light' or if system defaults to light)
+  const isLight = savedTheme === 'light' || (!savedTheme && !systemPrefersDark);
+  
+  if (isLight) {
+    document.body.classList.add('light-theme');
+    if (icon) icon.className = 'fa-solid fa-sun';
+  } else {
+    document.body.classList.remove('light-theme');
+    if (icon) icon.className = 'fa-solid fa-moon';
+  }
+  
+  toggleBtn.addEventListener('click', () => {
+    const isCurrentlyLight = document.body.classList.toggle('light-theme');
+    
+    // Smooth transition toggle
+    document.body.style.transition = 'background-color 0.4s ease, color 0.4s ease';
+    
+    if (isCurrentlyLight) {
+      localStorage.setItem('theme', 'light');
+      if (icon) {
+        icon.className = 'fa-solid fa-sun';
+      }
+    } else {
+      localStorage.setItem('theme', 'dark');
+      if (icon) {
+        icon.className = 'fa-solid fa-moon';
+      }
+    }
+    
+    // Clear transition to avoid cursor lag issues later
+    setTimeout(() => {
+      document.body.style.transition = '';
+    }, 400);
+  });
 }
