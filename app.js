@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  initSplashScreen();
   initParticleBackground();
   initTypingAnimation();
   initPhoneSimulator();
@@ -589,4 +590,35 @@ function initCardTilt() {
       card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
     });
   });
+}
+
+/* 12. Animated Splash Screen Control */
+function initSplashScreen() {
+  const splash = document.getElementById('splash-screen');
+  if (!splash) return;
+  
+  // Set overflow hidden on body to prevent scrolling during splash
+  document.body.style.overflow = 'hidden';
+  
+  let isRemoved = false;
+  
+  function removeSplash() {
+    if (isRemoved) return;
+    isRemoved = true;
+    
+    // Fade out splash overlay
+    splash.classList.add('fade-out');
+    document.body.style.overflow = ''; // Restore page scrolling
+    
+    // Completely remove from DOM after CSS transition completes
+    setTimeout(() => {
+      splash.remove();
+    }, 800);
+  }
+  
+  // Auto-remove after 2.5 seconds (gives animations time to run)
+  setTimeout(removeSplash, 2500);
+  
+  // Fallback if window load fires earlier
+  window.addEventListener('load', removeSplash);
 }
