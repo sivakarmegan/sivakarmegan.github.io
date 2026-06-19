@@ -202,6 +202,12 @@ function initPhoneSimulator() {
   const appChat = document.getElementById('screen-chat');
   const appCloud = document.getElementById('screen-cloud');
   const appFit = document.getElementById('screen-fit');
+  const appSteel = document.getElementById('screen-steel');
+  const appDairy = document.getElementById('screen-dairy');
+  const appPets = document.getElementById('screen-pets');
+  const appTrack = document.getElementById('screen-track');
+  const appCaller = document.getElementById('screen-caller');
+  const appFish = document.getElementById('screen-fish');
   
   const backBtn = document.querySelectorAll('.back-arrow');
   
@@ -237,6 +243,45 @@ function initPhoneSimulator() {
     appFit.classList.add('active');
     runFitSimulation();
   });
+
+  document.getElementById('app-steel-btn').addEventListener('click', () => {
+    launcher.classList.remove('active');
+    appSteel.classList.add('active');
+  });
+
+  document.getElementById('app-dairy-btn').addEventListener('click', () => {
+    launcher.classList.remove('active');
+    appDairy.classList.add('active');
+  });
+
+  document.getElementById('app-pets-btn').addEventListener('click', () => {
+    launcher.classList.remove('active');
+    appPets.classList.add('active');
+  });
+
+  document.getElementById('app-track-btn').addEventListener('click', () => {
+    launcher.classList.remove('active');
+    appTrack.classList.add('active');
+    if (window.routeTrackInterval) clearInterval(window.routeTrackInterval);
+    let lat = 13.0827;
+    let lng = 80.2707;
+    const latlngText = document.getElementById('track-latlng');
+    window.routeTrackInterval = setInterval(() => {
+      lat += (Math.random() - 0.5) * 0.0003;
+      lng += (Math.random() - 0.5) * 0.0003;
+      if (latlngText) latlngText.textContent = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+    }, 1000);
+  });
+
+  document.getElementById('app-caller-btn').addEventListener('click', () => {
+    launcher.classList.remove('active');
+    appCaller.classList.add('active');
+  });
+
+  document.getElementById('app-fish-btn').addEventListener('click', () => {
+    launcher.classList.remove('active');
+    appFish.classList.add('active');
+  });
   
   // Razorpay Pay Simulation
   const rpTrigger = document.getElementById('rp-trigger');
@@ -265,6 +310,162 @@ function initPhoneSimulator() {
       setTimeout(() => {
         rpOverlay.style.display = 'none';
       }, 5500);
+    });
+  }
+
+  // 1. SteelForce Simulation
+  const steelForm = document.getElementById('steel-order-form');
+  const steelSuccess = document.getElementById('steel-success');
+  if (steelForm) {
+    steelForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('steel-order-btn');
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = 'Submit Sales Order';
+        if (steelSuccess) steelSuccess.style.display = 'block';
+        steelForm.reset();
+      }, 1200);
+    });
+  }
+
+  // 2. DairyFresh Simulation
+  const dairyBtn = document.getElementById('dairy-dispatch-btn');
+  const dairySuccess = document.getElementById('dairy-success');
+  if (dairyBtn) {
+    dairyBtn.addEventListener('click', () => {
+      dairyBtn.disabled = true;
+      dairyBtn.textContent = 'Dispatching Cans...';
+      setTimeout(() => {
+        dairyBtn.disabled = false;
+        dairyBtn.textContent = 'Dispatch Milk Cans';
+        if (dairySuccess) dairySuccess.style.display = 'block';
+      }, 1500);
+    });
+  }
+
+  // 3. PawsFeed Store Simulation
+  let dogQty = 0;
+  let catQty = 0;
+  const dogPrice = 1850;
+  const catPrice = 950;
+  const dogVal = document.getElementById('dog-qty-val');
+  const catVal = document.getElementById('cat-qty-val');
+  const totalBillText = document.getElementById('pet-total-bill');
+
+  function updatePawsBill() {
+    const total = (dogQty * dogPrice) + (catQty * catPrice);
+    if (totalBillText) totalBillText.textContent = `₹${total.toLocaleString('en-IN')}`;
+  }
+
+  const dogPlus = document.getElementById('dog-qty-plus');
+  const dogMinus = document.getElementById('dog-qty-minus');
+  if (dogPlus && dogMinus) {
+    dogPlus.addEventListener('click', () => { dogQty++; if (dogVal) dogVal.textContent = dogQty; updatePawsBill(); });
+    dogMinus.addEventListener('click', () => { if (dogQty > 0) dogQty--; if (dogVal) dogVal.textContent = dogQty; updatePawsBill(); });
+  }
+
+  const catPlus = document.getElementById('cat-qty-plus');
+  const catMinus = document.getElementById('cat-qty-minus');
+  if (catPlus && catMinus) {
+    catPlus.addEventListener('click', () => { catQty++; if (catVal) catVal.textContent = catQty; updatePawsBill(); });
+    catMinus.addEventListener('click', () => { if (catQty > 0) catQty--; if (catVal) catVal.textContent = catQty; updatePawsBill(); });
+  }
+
+  const petOrderBtn = document.getElementById('pet-order-btn');
+  if (petOrderBtn) {
+    petOrderBtn.addEventListener('click', () => {
+      if (dogQty === 0 && catQty === 0) {
+        alert('Please add at least 1 item to checkout!');
+        return;
+      }
+      petOrderBtn.disabled = true;
+      petOrderBtn.textContent = 'Placing Order...';
+      setTimeout(() => {
+        petOrderBtn.disabled = false;
+        petOrderBtn.textContent = 'Checkout Order';
+        alert('Pet Feed order placed successfully!');
+        dogQty = 0;
+        catQty = 0;
+        if (dogVal) dogVal.textContent = '0';
+        if (catVal) catVal.textContent = '0';
+        updatePawsBill();
+      }, 1500);
+    });
+  }
+
+  // 4. Telecaller Simulation
+  const callBtn = document.getElementById('caller-call-btn');
+  const hangupBtn = document.getElementById('caller-hangup-btn');
+  const callerStatus = document.getElementById('caller-status-area');
+  const callDurText = document.getElementById('call-duration');
+  let callSeconds = 0;
+
+  function formatTime(s) {
+    const mins = Math.floor(s / 60).toString().padStart(2, '0');
+    const secs = (s % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+  }
+
+  if (callBtn) {
+    callBtn.addEventListener('click', () => {
+      callBtn.style.display = 'none';
+      if (callerStatus) callerStatus.style.display = 'flex';
+      if (callDurText) callDurText.textContent = 'Connecting...';
+      
+      callSeconds = 0;
+      setTimeout(() => {
+        if (window.callerCallInterval) clearInterval(window.callerCallInterval);
+        window.callerCallInterval = setInterval(() => {
+          callSeconds++;
+          if (callDurText) callDurText.textContent = `On Call... ${formatTime(callSeconds)}`;
+        }, 1000);
+      }, 1000);
+    });
+  }
+
+  if (hangupBtn) {
+    hangupBtn.addEventListener('click', () => {
+      if (window.callerCallInterval) clearInterval(window.callerCallInterval);
+      if (callerStatus) callerStatus.style.display = 'none';
+      if (callBtn) callBtn.style.display = 'block';
+    });
+  }
+
+  // 5. ChennaiFish Simulation
+  let fishCart = { name: '', price: 0, qty: 0 };
+  const addFishBtns = document.querySelectorAll('.add-fish-btn');
+  const fishBar = document.getElementById('fish-checkout-bar');
+  const fishSummary = document.getElementById('fish-cart-summary');
+  const fishPay = document.getElementById('fish-pay-btn');
+
+  addFishBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const name = btn.getAttribute('data-name');
+      const price = parseInt(btn.getAttribute('data-price'));
+      
+      fishCart.name = name;
+      fishCart.price = price;
+      fishCart.qty = 1;
+      
+      if (fishSummary) fishSummary.textContent = `1 Item | ₹${price}`;
+      if (fishBar) fishBar.style.display = 'flex';
+    });
+  });
+
+  if (fishPay) {
+    fishPay.addEventListener('click', () => {
+      fishPay.disabled = true;
+      fishPay.textContent = 'Ordering...';
+      setTimeout(() => {
+        fishPay.disabled = false;
+        fishPay.textContent = 'Order Now';
+        alert(`ChennaiFish order of ${fishCart.name} placed successfully! Delivering in 10 mins.`);
+        if (fishBar) fishBar.style.display = 'none';
+        fishCart = { name: '', price: 0, qty: 0 };
+      }, 1500);
     });
   }
 }
@@ -363,6 +564,40 @@ function resetAppStates() {
   // Hide overlays
   const rpOverlay = document.getElementById('rp-overlay');
   if (rpOverlay) rpOverlay.style.display = 'none';
+
+  // Reset SteelForce success state
+  const steelSuccess = document.getElementById('steel-success');
+  if (steelSuccess) steelSuccess.style.display = 'none';
+
+  // Reset DairyFresh success state
+  const dairySuccess = document.getElementById('dairy-success');
+  if (dairySuccess) dairySuccess.style.display = 'none';
+
+  // Reset PawsFeed Quantities
+  const dogVal = document.getElementById('dog-qty-val');
+  const catVal = document.getElementById('cat-qty-val');
+  const totalBillText = document.getElementById('pet-total-bill');
+  if (dogVal) dogVal.textContent = '0';
+  if (catVal) catVal.textContent = '0';
+  if (totalBillText) totalBillText.textContent = '₹0';
+
+  // Reset CallDesk Call Timer
+  if (window.callerCallInterval) {
+    clearInterval(window.callerCallInterval);
+  }
+  const callBtn = document.getElementById('caller-call-btn');
+  const callerStatus = document.getElementById('caller-status-area');
+  if (callerStatus) callerStatus.style.display = 'none';
+  if (callBtn) callBtn.style.display = 'block';
+
+  // Reset RouteFlow Location Tracker
+  if (window.routeTrackInterval) {
+    clearInterval(window.routeTrackInterval);
+  }
+
+  // Reset ChennaiFish Checkout Bar
+  const fishBar = document.getElementById('fish-checkout-bar');
+  if (fishBar) fishBar.style.display = 'none';
 }
 
 /* 4. Intersection Observer for Skills */

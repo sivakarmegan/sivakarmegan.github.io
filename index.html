@@ -67,7 +67,7 @@
     <div class="hero-container">
       <div class="hero-info scroll-reveal">
         <div class="badge">
-          <i class="fa-solid fa-bolt"></i> Mobile Developer Specialist
+          <i class="fa-solid fa-bolt"></i> Mobile Developer
         </div>
         <h1>Sivaprakash<br>Karmegan</h1>
         <h2>I am a <span class="typing-text">App Developer</span></h2>
@@ -147,6 +147,54 @@
                   </div>
                   <div class="app-label">FitTrack</div>
                 </div>
+
+                <!-- App 5: Steel Company Field Sales App -->
+                <div class="app-icon-wrapper" id="app-steel-btn">
+                  <div class="app-icon app-steel">
+                    <i class="fa-solid fa-industry"></i>
+                  </div>
+                  <div class="app-label">SteelForce</div>
+                </div>
+
+                <!-- App 6: Dairy Milk Company App -->
+                <div class="app-icon-wrapper" id="app-dairy-btn">
+                  <div class="app-icon app-dairy">
+                    <i class="fa-solid fa-cow"></i>
+                  </div>
+                  <div class="app-label">DairyFresh</div>
+                </div>
+
+                <!-- App 7: Cat and Dog Feed Sales App -->
+                <div class="app-icon-wrapper" id="app-pets-btn">
+                  <div class="app-icon app-pets">
+                    <i class="fa-solid fa-paw"></i>
+                  </div>
+                  <div class="app-label">PawsFeed</div>
+                </div>
+
+                <!-- App 8: Location Tracking App -->
+                <div class="app-icon-wrapper" id="app-track-btn">
+                  <div class="app-icon app-track">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                  </div>
+                  <div class="app-label">RouteFlow</div>
+                </div>
+
+                <!-- App 9: Telecaller App -->
+                <div class="app-icon-wrapper" id="app-caller-btn">
+                  <div class="app-icon app-caller">
+                    <i class="fa-solid fa-headset"></i>
+                  </div>
+                  <div class="app-label">CallDesk</div>
+                </div>
+
+                <!-- App 10: Chennai Fish App -->
+                <div class="app-icon-wrapper" id="app-fish-btn">
+                  <div class="app-icon app-fish">
+                    <i class="fa-solid fa-fish"></i>
+                  </div>
+                  <div class="app-label">ChennaiFish</div>
+                </div>
               </div>
             </div>
 
@@ -222,6 +270,192 @@
                 </div>
                 <div class="fit-chart" id="fit-chart-anim">
                   <!-- bars animated in app.js -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Steel Company Field Sales Screen -->
+            <div id="screen-steel" class="screen-content">
+              <div class="app-header">
+                <span class="back-arrow"><i class="fa-solid fa-chevron-left"></i></span>
+                <span>SteelForce Sales</span>
+              </div>
+              <div class="steel-dashboard">
+                <div class="steel-metric">
+                  <span class="steel-metric-label">Today's Sales Target</span>
+                  <span class="steel-metric-val">12.5 / 15 Tons</span>
+                </div>
+                <form class="steel-order-form" id="steel-order-form">
+                  <div class="sim-form-group">
+                    <label>Select Product Type</label>
+                    <select id="steel-product">
+                      <option>TMT Reinforcement Bars</option>
+                      <option>Structural Steel Beams</option>
+                      <option>Galvanized Steel Sheets</option>
+                    </select>
+                  </div>
+                  <div class="sim-form-group">
+                    <label>Tonnage (Tons)</label>
+                    <input type="number" id="steel-quantity" value="5" min="1">
+                  </div>
+                  <button type="submit" class="sim-btn" id="steel-order-btn">Submit Sales Order</button>
+                </form>
+                <div class="steel-success-msg" id="steel-success" style="display: none;">
+                  <i class="fa-solid fa-circle-check"></i> Order Submitted Successfully!
+                </div>
+              </div>
+            </div>
+
+            <!-- Dairy Milk Company Screen -->
+            <div id="screen-dairy" class="screen-content">
+              <div class="app-header">
+                <span class="back-arrow"><i class="fa-solid fa-chevron-left"></i></span>
+                <span>DairyFresh Dispatch</span>
+              </div>
+              <div class="dairy-dashboard">
+                <div class="dairy-stat-grid">
+                  <div class="dairy-stat-box">
+                    <span class="dairy-lbl">Milk Collected</span>
+                    <span class="dairy-val">1,240 L</span>
+                  </div>
+                  <div class="dairy-stat-box">
+                    <span class="dairy-lbl">Avg Fat %</span>
+                    <span class="dairy-val">4.2%</span>
+                  </div>
+                </div>
+                <div class="dairy-dispatch-card">
+                  <div class="dairy-dispatch-header">Can Dispatch Queue</div>
+                  <div class="dairy-queue-item">
+                    <span>Route 4 (Chennai Central)</span>
+                    <span class="status-pill status-ready">Ready</span>
+                  </div>
+                  <button class="sim-btn" id="dairy-dispatch-btn">Dispatch Milk Cans</button>
+                </div>
+                <div class="dairy-success-msg" id="dairy-success" style="display: none;">
+                  <i class="fa-solid fa-truck-ramp-box"></i> Milk Cans Dispatched!
+                </div>
+              </div>
+            </div>
+
+            <!-- Cat and Dog Feed Sales Screen -->
+            <div id="screen-pets" class="screen-content">
+              <div class="app-header">
+                <span class="back-arrow"><i class="fa-solid fa-chevron-left"></i></span>
+                <span>PawsFeed Store</span>
+              </div>
+              <div class="pets-store">
+                <div class="pet-product-item">
+                  <div class="pet-product-info">
+                    <span class="pet-prod-name">Premium Dog Kibble (20kg)</span>
+                    <span class="pet-prod-price">₹1,850</span>
+                  </div>
+                  <div class="pet-qty-control">
+                    <button class="qty-btn" id="dog-qty-minus">-</button>
+                    <span id="dog-qty-val">0</span>
+                    <button class="qty-btn" id="dog-qty-plus">+</button>
+                  </div>
+                </div>
+                <div class="pet-product-item">
+                  <div class="pet-product-info">
+                    <span class="pet-prod-name">Tuna Cat Salmon Feeds (10kg)</span>
+                    <span class="pet-prod-price">₹950</span>
+                  </div>
+                  <div class="pet-qty-control">
+                    <button class="qty-btn" id="cat-qty-minus">-</button>
+                    <span id="cat-qty-val">0</span>
+                    <button class="qty-btn" id="cat-qty-plus">+</button>
+                  </div>
+                </div>
+                <div class="pet-cart-summary">
+                  <span>Total Bill: </span>
+                  <span id="pet-total-bill" class="pet-bill-amount">₹0</span>
+                </div>
+                <button class="sim-btn" id="pet-order-btn">Checkout Order</button>
+              </div>
+            </div>
+
+            <!-- Location Tracking Screen -->
+            <div id="screen-track" class="screen-content">
+              <div class="app-header">
+                <span class="back-arrow"><i class="fa-solid fa-chevron-left"></i></span>
+                <span>RouteFlow Tracker</span>
+              </div>
+              <div class="track-container">
+                <div class="track-map-wrapper">
+                  <div class="sim-map" id="sim-map">
+                    <div class="map-grid-pattern"></div>
+                    <div class="sim-car" id="sim-car">
+                      <i class="fa-solid fa-truck-moving"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="track-metrics">
+                  <div class="track-coord">
+                    <span>Coordinates</span>
+                    <span id="track-latlng" class="mono-font">13.0827, 80.2707</span>
+                  </div>
+                  <div class="track-status">
+                    <span>Dispatch Status</span>
+                    <span class="pulse-text">In Transit (Chennai)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Telecaller Screen -->
+            <div id="screen-caller" class="screen-content">
+              <div class="app-header">
+                <span class="back-arrow"><i class="fa-solid fa-chevron-left"></i></span>
+                <span>CallDesk Dialer</span>
+              </div>
+              <div class="caller-dashboard">
+                <div class="caller-lead-card">
+                  <div class="lead-header">Current Pending Lead</div>
+                  <div class="lead-name">Rajesh Kumar</div>
+                  <div class="lead-phone">+91 98765 43210</div>
+                  <div class="lead-notes">Interested in TMT Steel re-orders.</div>
+                </div>
+                <div class="caller-actions">
+                  <button class="call-btn-dial" id="caller-call-btn">
+                    <i class="fa-solid fa-phone"></i> Simulate Call
+                  </button>
+                </div>
+                <div class="caller-status-area" id="caller-status-area" style="display: none;">
+                  <span class="call-duration" id="call-duration">Calling... 00:00</span>
+                  <button class="call-btn-hangup" id="caller-hangup-btn">Hang Up</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chennai Fish (Zepto Fish App) Screen -->
+            <div id="screen-fish" class="screen-content">
+              <div class="app-header">
+                <span class="back-arrow"><i class="fa-solid fa-chevron-left"></i></span>
+                <span>ChennaiFish Delivery</span>
+              </div>
+              <div class="fish-store">
+                <div class="fish-banner">
+                  <span class="banner-lbl">Fresh Catch In 10 Mins!</span>
+                </div>
+                <div class="fish-grid">
+                  <div class="fish-item">
+                    <div class="fish-emoji"><i class="fa-solid fa-fish"></i></div>
+                    <div class="fish-name">Seer Fish (Vanjaram)</div>
+                    <div class="fish-qty">500g Slices</div>
+                    <div class="fish-price">₹450</div>
+                    <button class="add-fish-btn" data-name="Vanjaram" data-price="450">Add</button>
+                  </div>
+                  <div class="fish-item">
+                    <div class="fish-emoji"><i class="fa-solid fa-shrimp"></i></div>
+                    <div class="fish-name">White Prawns (Eral)</div>
+                    <div class="fish-qty">500g Peeled</div>
+                    <div class="fish-price">₹350</div>
+                    <button class="add-fish-btn" data-name="Prawns" data-price="350">Add</button>
+                  </div>
+                </div>
+                <div class="fish-checkout-bar" id="fish-checkout-bar" style="display: none;">
+                  <span id="fish-cart-summary">1 Item | ₹450</span>
+                  <button class="fish-pay-btn" id="fish-pay-btn">Order Now</button>
                 </div>
               </div>
             </div>

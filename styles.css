@@ -669,6 +669,30 @@ section {
   background: linear-gradient(135deg, #10b981, #047857);
 }
 
+.app-steel {
+  background: linear-gradient(135deg, #708090, #4f5d73);
+}
+
+.app-dairy {
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+}
+
+.app-pets {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.app-track {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.app-caller {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+}
+
+.app-fish {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+}
+
 /* Sim Screen Header */
 .app-header {
   padding: 12px;
@@ -912,6 +936,552 @@ section {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   animation: heightGrow 1s ease forwards;
+}
+
+/* Shared Simulator Form & Button Elements */
+.sim-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.sim-form-group label {
+  font-size: 8px;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.sim-form-group select,
+.sim-form-group input {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 4px;
+  padding: 6px;
+  color: #fff;
+  font-size: 10px;
+}
+
+.sim-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+  margin-top: 5px;
+}
+
+.sim-btn:hover {
+  background: #1d4ed8;
+}
+
+/* Steel Force App Simulator */
+.steel-dashboard {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.steel-metric {
+  background: #1e293b;
+  border-left: 3px solid #708090;
+  padding: 6px 10px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.steel-metric-label {
+  font-size: 9px;
+  color: #cbd5e1;
+}
+
+.steel-metric-val {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.steel-order-form {
+  background: #1e293b;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.steel-success-msg {
+  color: #10b981;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 6px;
+  animation: scaleUp 0.3s ease;
+}
+
+/* DairyFresh App Simulator */
+.dairy-dashboard {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dairy-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.dairy-stat-box {
+  background: #1e293b;
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border-bottom: 2px solid #0ea5e9;
+}
+
+.dairy-lbl {
+  font-size: 8px;
+  color: #94a3b8;
+}
+
+.dairy-val {
+  font-size: 11px;
+  font-weight: bold;
+  color: #38bdf8;
+}
+
+.dairy-dispatch-card {
+  background: #1e293b;
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dairy-dispatch-header {
+  font-size: 10px;
+  font-weight: bold;
+  color: #cbd5e1;
+}
+
+.dairy-queue-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f172a;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 9px;
+}
+
+.status-pill {
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 7px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-pill.status-ready {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.dairy-success-msg {
+  color: #0ea5e9;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 6px;
+  animation: scaleUp 0.3s ease;
+}
+
+/* PawsFeed App Simulator */
+.pets-store {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pet-product-item {
+  background: #1e293b;
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.pet-product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pet-prod-name {
+  font-size: 9px;
+  font-weight: bold;
+  color: #f1f5f9;
+}
+
+.pet-prod-price {
+  font-size: 9px;
+  color: #f59e0b;
+}
+
+.pet-qty-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty-btn {
+  background: #334155;
+  color: #fff;
+  border: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.qty-btn:hover {
+  background: #475569;
+}
+
+#dog-qty-val,
+#cat-qty-val {
+  font-size: 10px;
+  font-weight: bold;
+  min-width: 8px;
+  text-align: center;
+}
+
+.pet-cart-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  background: #0f172a;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.pet-bill-amount {
+  color: #f59e0b;
+  font-size: 11px;
+}
+
+/* RouteFlow App Simulator */
+.track-container {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.track-map-wrapper {
+  height: 120px;
+  background: #1e293b;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sim-map {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.map-grid-pattern {
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 15px 15px;
+}
+
+.sim-car {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  color: #10b981;
+  font-size: 16px;
+  animation: moveVehicle 8s linear infinite;
+  text-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+}
+
+@keyframes moveVehicle {
+  0% { left: 10px; top: 50px; transform: rotate(0deg); }
+  25% { left: 100px; top: 50px; transform: rotate(0deg); }
+  35% { left: 100px; top: 90px; transform: rotate(90deg); }
+  60% { left: 200px; top: 90px; transform: rotate(0deg); }
+  75% { left: 200px; top: 20px; transform: rotate(-90deg); }
+  100% { left: 10px; top: 20px; transform: rotate(180deg); }
+}
+
+.track-metrics {
+  background: #0f172a;
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 9px;
+}
+
+.track-coord,
+.track-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.track-coord span:first-child,
+.track-status span:first-child {
+  color: #94a3b8;
+}
+
+.track-coord span.mono-font {
+  font-family: monospace;
+  color: #10b981;
+  font-weight: bold;
+}
+
+.pulse-text {
+  color: #38bdf8;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* CallDesk App Simulator */
+.caller-dashboard {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.caller-lead-card {
+  background: #1e293b;
+  border-radius: 8px;
+  padding: 10px;
+  border-top: 3px solid #6366f1;
+}
+
+.lead-header {
+  font-size: 8px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.lead-name {
+  font-size: 12px;
+  font-weight: bold;
+  color: #f1f5f9;
+}
+
+.lead-phone {
+  font-size: 10px;
+  color: #6366f1;
+  margin: 2px 0 6px;
+  font-weight: bold;
+}
+
+.lead-notes {
+  font-size: 8px;
+  color: #94a3b8;
+  background: #0f172a;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+.caller-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.call-btn-dial {
+  background: #10b981;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+}
+
+.call-btn-dial:hover {
+  background: #059669;
+}
+
+.caller-status-area {
+  background: #0f172a;
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: scaleUp 0.3s ease;
+}
+
+.call-duration {
+  font-size: 9px;
+  color: #10b981;
+  font-weight: bold;
+}
+
+.call-btn-hangup {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.call-btn-hangup:hover {
+  background: #dc2626;
+}
+
+/* Chennai Fish App Simulator */
+.fish-store {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fish-banner {
+  background: linear-gradient(90deg, #06b6d4, #0891b2);
+  border-radius: 6px;
+  padding: 6px;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+}
+
+.banner-lbl {
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+
+.fish-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.fish-item {
+  background: #1e293b;
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.fish-emoji {
+  font-size: 16px;
+  color: #38bdf8;
+  margin-bottom: 4px;
+}
+
+.fish-name {
+  font-size: 8px;
+  font-weight: bold;
+  color: #f1f5f9;
+}
+
+.fish-qty {
+  font-size: 7px;
+  color: #94a3b8;
+  margin-top: 1px;
+}
+
+.fish-price {
+  font-size: 9px;
+  font-weight: bold;
+  color: #06b6d4;
+  margin: 4px 0;
+}
+
+.add-fish-btn {
+  background: #0891b2;
+  color: #fff;
+  border: none;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 7px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}
+
+.add-fish-btn:hover {
+  background: #0e7490;
+}
+
+.fish-checkout-bar {
+  background: #0f172a;
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 9px;
+  font-weight: bold;
+  border-left: 3px solid #06b6d4;
+  animation: slideUpShow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.fish-pay-btn {
+  background: #10b981;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.fish-pay-btn:hover {
+  background: #059669;
 }
 
 /* TECH STACKS SECTION */
