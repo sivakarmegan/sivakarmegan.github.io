@@ -22,18 +22,18 @@ function initParticleBackground() {
   const canvas = document.getElementById('particle-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  
+
   let width = (canvas.width = window.innerWidth);
   let height = (canvas.height = window.innerHeight);
-  
+
   window.addEventListener('resize', () => {
     width = (canvas.width = window.innerWidth);
     height = (canvas.height = window.innerHeight);
   });
-  
+
   const particles = [];
   const maxParticles = 65; // increased density for winding flow
-  
+
   // Premium organic colors: magentas, purples, cyans, teals
   const palette = [
     'rgba(236, 72, 153, 0.5)',  // pink/magenta (petals)
@@ -41,7 +41,7 @@ function initParticleBackground() {
     'rgba(6, 182, 212, 0.5)',   // cyan (sea waves)
     'rgba(20, 184, 166, 0.5)'    // teal
   ];
-  
+
   class Particle {
     constructor() {
       this.x = Math.random() * width;
@@ -54,16 +54,16 @@ function initParticleBackground() {
       this.spinSpeed = (Math.random() - 0.5) * 0.03;
       this.trail = [];
     }
-    
+
     update(time) {
       // 1. Organic wave wind current drift (sea winding / flowers blowing)
       // Generates continuous flow field waves based on sine waves
       const windX = Math.sin(time * 0.002 + this.y * 0.004) * 0.4;
       const windY = Math.cos(time * 0.002 + this.x * 0.004) * 0.3;
-      
+
       this.vx += windX;
       this.vy += windY;
-      
+
       // 2. Swirling vortex force towards mouse when cursor is active
       const dx = this.x - globalMouse.x;
       const dy = this.y - globalMouse.y;
@@ -71,37 +71,37 @@ function initParticleBackground() {
       if (dist < 260) {
         const force = (260 - dist) / 260;
         const angle = Math.atan2(dy, dx);
-        
+
         // Circular swirl direction (perpendicular to angle) + drag pull inward
         const swirlAngle = angle + Math.PI / 2 + 0.15;
         this.vx += Math.cos(swirlAngle) * force * 0.8;
         this.vy += Math.sin(swirlAngle) * force * 0.8;
       }
-      
+
       // 3. Friction & speed damping
       this.vx *= 0.95;
       this.vy *= 0.95;
-      
+
       // Apply movement
       this.x += this.vx;
       this.y += this.vy;
-      
+
       // Angle spin
       this.angle += this.spinSpeed;
-      
+
       // Boundaries wrapping
       if (this.x < -30) this.x = width + 30;
       if (this.x > width + 30) this.x = -30;
       if (this.y < -30) this.y = height + 30;
       if (this.y > height + 30) this.y = -30;
-      
+
       // Trail updates
       this.trail.push({ x: this.x, y: this.y });
       if (this.trail.length > 10) {
         this.trail.shift();
       }
     }
-    
+
     draw() {
       // Draw smooth winding light trail
       if (this.trail.length > 1) {
@@ -116,7 +116,7 @@ function initParticleBackground() {
         ctx.lineJoin = 'round';
         ctx.stroke();
       }
-      
+
       // Draw organic petal/leaf shape
       ctx.save();
       ctx.translate(this.x, this.y);
@@ -133,43 +133,43 @@ function initParticleBackground() {
       ctx.restore();
     }
   }
-  
+
   for (let i = 0; i < maxParticles; i++) {
     particles.push(new Particle());
   }
-  
+
   let lastTime = 0;
   function animate(timestamp) {
     if (!lastTime) lastTime = timestamp;
     const elapsed = timestamp - lastTime;
-    
+
     // Clear canvas
     ctx.clearRect(0, 0, width, height);
-    
+
     particles.forEach((p) => {
       p.update(timestamp);
       p.draw();
     });
-    
+
     requestAnimationFrame(animate);
   }
-  
+
   requestAnimationFrame(animate);
 }
 
 /* 2. Text Typing Effect */
 function initTypingAnimation() {
-  const words = ["App Developer", "Android Native Dev", "Flutter Specialist", "Full-Stack Creator"];
+  const words = ["App Developer", "Android Native Dev", "Flutter Developer", "Full-Stack Creator"];
   let wordIdx = 0;
   let charIdx = 0;
   let isDeleting = false;
   const target = document.querySelector('.typing-text');
-  
+
   if (!target) return;
-  
+
   function type() {
     const currentWord = words[wordIdx];
-    
+
     if (isDeleting) {
       target.textContent = currentWord.substring(0, charIdx - 1);
       charIdx--;
@@ -177,9 +177,9 @@ function initTypingAnimation() {
       target.textContent = currentWord.substring(0, charIdx + 1);
       charIdx++;
     }
-    
+
     let speed = isDeleting ? 40 : 100;
-    
+
     if (!isDeleting && charIdx === currentWord.length) {
       speed = 1800; // pause at full word
       isDeleting = true;
@@ -188,10 +188,10 @@ function initTypingAnimation() {
       wordIdx = (wordIdx + 1) % words.length;
       speed = 400; // pause before typing next
     }
-    
+
     setTimeout(type, speed);
   }
-  
+
   setTimeout(type, 1000);
 }
 
@@ -208,9 +208,9 @@ function initPhoneSimulator() {
   const appTrack = document.getElementById('screen-track');
   const appCaller = document.getElementById('screen-caller');
   const appFish = document.getElementById('screen-fish');
-  
+
   const backBtn = document.querySelectorAll('.back-arrow');
-  
+
   // Back button functionality
   backBtn.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -219,25 +219,25 @@ function initPhoneSimulator() {
       resetAppStates();
     });
   });
-  
+
   // App click events
   document.getElementById('app-pay-btn').addEventListener('click', () => {
     launcher.classList.remove('active');
     appPay.classList.add('active');
   });
-  
+
   document.getElementById('app-chat-btn').addEventListener('click', () => {
     launcher.classList.remove('active');
     appChat.classList.add('active');
     runChatSimulation();
   });
-  
+
   document.getElementById('app-cloud-btn').addEventListener('click', () => {
     launcher.classList.remove('active');
     appCloud.classList.add('active');
     runCloudConsoleSimulation();
   });
-  
+
   document.getElementById('app-fit-btn').addEventListener('click', () => {
     launcher.classList.remove('active');
     appFit.classList.add('active');
@@ -282,31 +282,31 @@ function initPhoneSimulator() {
     launcher.classList.remove('active');
     appFish.classList.add('active');
   });
-  
+
   // Razorpay Pay Simulation
   const rpTrigger = document.getElementById('rp-trigger');
   const rpOverlay = document.getElementById('rp-overlay');
   const rpText = document.getElementById('rp-status-text');
   const rpIcon = document.getElementById('rp-status-icon');
-  
+
   if (rpTrigger) {
     rpTrigger.addEventListener('click', () => {
       rpOverlay.style.display = 'flex';
       rpText.textContent = 'Contacting Payment Gateway...';
       rpIcon.className = 'fas fa-spinner fa-spin';
       rpIcon.style.color = '#0284c7';
-      
+
       setTimeout(() => {
         rpText.textContent = 'Processing Payment of ₹100...';
         rpIcon.className = 'fas fa-circle-notch fa-spin';
       }, 1500);
-      
+
       setTimeout(() => {
         rpText.textContent = 'Payment Completed Successfully!';
         rpIcon.className = 'fas fa-check-circle rp-success-icon';
         rpIcon.style.color = '#10b981';
       }, 3500);
-      
+
       setTimeout(() => {
         rpOverlay.style.display = 'none';
       }, 5500);
@@ -414,7 +414,7 @@ function initPhoneSimulator() {
       callBtn.style.display = 'none';
       if (callerStatus) callerStatus.style.display = 'flex';
       if (callDurText) callDurText.textContent = 'Connecting...';
-      
+
       callSeconds = 0;
       setTimeout(() => {
         if (window.callerCallInterval) clearInterval(window.callerCallInterval);
@@ -445,11 +445,11 @@ function initPhoneSimulator() {
     btn.addEventListener('click', () => {
       const name = btn.getAttribute('data-name');
       const price = parseInt(btn.getAttribute('data-price'));
-      
+
       fishCart.name = name;
       fishCart.price = price;
       fishCart.qty = 1;
-      
+
       if (fishSummary) fishSummary.textContent = `1 Item | ₹${price}`;
       if (fishBar) fishBar.style.display = 'flex';
     });
@@ -475,7 +475,7 @@ let chatTimers = [];
 function runChatSimulation() {
   const chatArea = document.getElementById('chat-msg-area');
   chatArea.innerHTML = ''; // reset
-  
+
   const messages = [
     { type: 'in', text: 'Hi Sivaprakash! Can you help integrate Razorpay in our app?' },
     { type: 'out', text: 'Hey there! Yes, absolutely. I have working experience in online payments.' },
@@ -483,7 +483,7 @@ function runChatSimulation() {
     { type: 'out', text: 'Perfect! I write native Java and Flutter apps. We can build it in no time!' },
     { type: 'in', text: 'Cool, let\'s start tomorrow!' }
   ];
-  
+
   let delay = 600;
   messages.forEach((msg, idx) => {
     const t = setTimeout(() => {
@@ -503,7 +503,7 @@ let cloudTimer = null;
 function runCloudConsoleSimulation() {
   const consoleArea = document.getElementById('cloud-console-log');
   consoleArea.innerHTML = '';
-  
+
   const logs = [
     '<span class="cyan">system@siva-cloud:~$</span> gcloud projects list',
     'PROJECT_ID         NAME             PROJECT_NUMBER',
@@ -518,7 +518,7 @@ function runCloudConsoleSimulation() {
     '✔  functions: Finished compiling sources',
     '✔  functions: Functions successfully deployed!'
   ];
-  
+
   let i = 0;
   function printLogLine() {
     if (i < logs.length) {
@@ -538,7 +538,7 @@ function runCloudConsoleSimulation() {
 function runFitSimulation() {
   const container = document.getElementById('fit-chart-anim');
   container.innerHTML = '';
-  
+
   // Create 6 dynamic height bars
   const heights = [30, 65, 45, 90, 60, 80];
   heights.forEach((h, idx) => {
@@ -546,7 +546,7 @@ function runFitSimulation() {
     bar.className = 'fit-bar';
     bar.style.height = '0%';
     container.appendChild(bar);
-    
+
     setTimeout(() => {
       bar.style.height = `${h}%`;
     }, 100 * idx);
@@ -557,10 +557,10 @@ function resetAppStates() {
   // Clear chat simulators
   chatTimers.forEach(t => clearTimeout(t));
   chatTimers = [];
-  
+
   // Clear cloud simulator
   if (cloudTimer) clearTimeout(cloudTimer);
-  
+
   // Hide overlays
   const rpOverlay = document.getElementById('rp-overlay');
   if (rpOverlay) rpOverlay.style.display = 'none';
@@ -604,9 +604,9 @@ function resetAppStates() {
 function initSkillObserver() {
   const skillSection = document.getElementById('skills');
   const bars = document.querySelectorAll('.skill-bar-fill');
-  
+
   if (!skillSection || bars.length === 0) return;
-  
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -618,7 +618,7 @@ function initSkillObserver() {
       }
     });
   }, { threshold: 0.2 });
-  
+
   observer.observe(skillSection);
 }
 
@@ -626,21 +626,21 @@ function initSkillObserver() {
 function initTiltEffect() {
   const wrapper = document.querySelector('.phone-mockup-wrapper');
   const phone = document.querySelector('.smartphone');
-  
+
   if (!wrapper || !phone) return;
-  
+
   wrapper.addEventListener('mousemove', (e) => {
     const rect = wrapper.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    
+
     // Calculate tilt
     const xAngle = (rect.height / 2 - y) / 15; // pitch
     const yAngle = (x - rect.width / 2) / 15;  // yaw
-    
+
     phone.style.transform = `rotateX(${xAngle}deg) rotateY(${yAngle}deg) scale(1.02)`;
   });
-  
+
   wrapper.addEventListener('mouseleave', () => {
     phone.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
   });
@@ -650,38 +650,38 @@ function initTiltEffect() {
 function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
-  
+
   const btn = form.querySelector('.submit-btn');
   const btnText = btn.innerHTML;
-  
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    
+
     // Perform simple validation
     const name = document.getElementById('form-name').value.trim();
     const email = document.getElementById('form-email').value.trim();
     const msg = document.getElementById('form-message').value.trim();
-    
+
     if (!name || !email || !msg) {
       alert('Please fill out all fields.');
       return;
     }
-    
+
     btn.disabled = true;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending Message...';
-    
+
     setTimeout(() => {
       btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
       btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-      
+
       form.reset();
-      
+
       setTimeout(() => {
         btn.disabled = false;
         btn.innerHTML = btnText;
         btn.style.background = '';
       }, 3000);
-      
+
     }, 2000);
   });
 }
@@ -690,7 +690,7 @@ function initContactForm() {
 window.addEventListener('scroll', () => {
   const sections = document.querySelectorAll('section');
   const navLinks = document.querySelectorAll('nav a');
-  
+
   let currentSec = '';
   sections.forEach(sec => {
     const top = sec.offsetTop - 120;
@@ -698,7 +698,7 @@ window.addEventListener('scroll', () => {
       currentSec = sec.getAttribute('id');
     }
   });
-  
+
   navLinks.forEach(link => {
     link.classList.remove('active');
     if (link.getAttribute('href') === `#${currentSec}`) {
@@ -711,12 +711,12 @@ window.addEventListener('scroll', () => {
 function initMouseGlow() {
   const glow = document.querySelector('.cursor-glow');
   if (!glow) return;
-  
+
   window.addEventListener('mousemove', (e) => {
     // Update global mouse pointer positions
     globalMouse.x = e.clientX;
     globalMouse.y = e.clientY;
-    
+
     document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
     document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
   });
@@ -732,26 +732,26 @@ function initCustomCursor() {
   let mouseY = -100;
   let ringX = -100;
   let ringY = -100;
-  
+
   window.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
-    
+
     // Instantly set position of center core dot
     dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
   });
-  
+
   // Smoothly LERP position of outer tracking ring
   function updateRing() {
     const ease = 0.15;
     ringX += (mouseX - ringX) * ease;
     ringY += (mouseY - ringY) * ease;
-    
+
     ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
     requestAnimationFrame(updateRing);
   }
   requestAnimationFrame(updateRing);
-  
+
   // Bind hover states using high-performance mouseover/mouseout event delegation
   document.addEventListener('mouseover', (e) => {
     const interactive = e.target.closest('a, button, input, textarea, select, .btn, .app-icon-wrapper, .back-arrow, .project-link, .submit-btn, .pay-btn, #rp-trigger');
@@ -776,7 +776,7 @@ function initCustomCursor() {
 function initScrollReveal() {
   const revealElements = document.querySelectorAll('.scroll-reveal');
   if (revealElements.length === 0) return;
-  
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -787,7 +787,7 @@ function initScrollReveal() {
     threshold: 0.08,
     rootMargin: '0px 0px -40px 0px'
   });
-  
+
   revealElements.forEach(el => observer.observe(el));
 }
 
@@ -813,15 +813,15 @@ function initCardTilt() {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      
+
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
       const rotateX = -(y - centerY) / 12; // pitch
       const rotateY = (x - centerX) / 12;  // yaw
-      
+
       card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
     });
-    
+
     card.addEventListener('mouseleave', () => {
       card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
     });
@@ -832,26 +832,26 @@ function initCardTilt() {
 function initSplashScreen() {
   const splash = document.getElementById('splash-screen');
   if (!splash) return;
-  
+
   // Set overflow hidden on body to prevent scrolling during splash
   document.body.style.overflow = 'hidden';
-  
+
   let isRemoved = false;
-  
+
   function removeSplash() {
     if (isRemoved) return;
     isRemoved = true;
-    
+
     // Fade out splash overlay
     splash.classList.add('fade-out');
     document.body.style.overflow = ''; // Restore page scrolling
-    
+
     // Completely remove from DOM after CSS transition completes
     setTimeout(() => {
       splash.remove();
     }, 800);
   }
-  
+
   // Auto-remove after 2.5 seconds (gives animations time to run)
   setTimeout(removeSplash, 2500);
 }
@@ -860,16 +860,16 @@ function initSplashScreen() {
 function initThemeToggle() {
   const toggleBtn = document.getElementById('theme-toggle');
   if (!toggleBtn) return;
-  
+
   const icon = toggleBtn.querySelector('i');
-  
+
   // Check saved setting or default to system
   const savedTheme = localStorage.getItem('theme');
   const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  
+
   // Set default (default is dark, so light theme is chosen if saved as 'light' or if system defaults to light)
   const isLight = savedTheme === 'light' || (!savedTheme && !systemPrefersDark);
-  
+
   if (isLight) {
     document.body.classList.add('light-theme');
     if (icon) icon.className = 'fa-solid fa-sun';
@@ -877,13 +877,13 @@ function initThemeToggle() {
     document.body.classList.remove('light-theme');
     if (icon) icon.className = 'fa-solid fa-moon';
   }
-  
+
   toggleBtn.addEventListener('click', () => {
     const isCurrentlyLight = document.body.classList.toggle('light-theme');
-    
+
     // Smooth transition toggle
     document.body.style.transition = 'background-color 0.4s ease, color 0.4s ease';
-    
+
     if (isCurrentlyLight) {
       localStorage.setItem('theme', 'light');
       if (icon) {
@@ -895,7 +895,7 @@ function initThemeToggle() {
         icon.className = 'fa-solid fa-moon';
       }
     }
-    
+
     // Clear transition to avoid cursor lag issues later
     setTimeout(() => {
       document.body.style.transition = '';
